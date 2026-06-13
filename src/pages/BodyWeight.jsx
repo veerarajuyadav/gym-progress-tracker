@@ -1,8 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function BodyWeight() {
   const [weight, setWeight] = useState("");
-  const [weights, setWeights] = useState([]);
+
+  const [weights, setWeights] = useState(() => {
+    const savedWeights = localStorage.getItem("weights");
+    return savedWeights ? JSON.parse(savedWeights) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem(
+      "weights",
+      JSON.stringify(weights)
+    );
+  }, [weights]);
 
   const addWeight = () => {
     if (!weight) return;
@@ -18,7 +29,11 @@ function BodyWeight() {
   };
 
   const deleteWeight = (id) => {
-    setWeights(weights.filter((entry) => entry.id !== id));
+    setWeights(
+      weights.filter(
+        (entry) => entry.id !== id
+      )
+    );
   };
 
   return (
@@ -32,7 +47,9 @@ function BodyWeight() {
           type="number"
           placeholder="Enter weight (kg)"
           value={weight}
-          onChange={(e) => setWeight(e.target.value)}
+          onChange={(e) =>
+            setWeight(e.target.value)
+          }
           className="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 w-64"
         />
 
@@ -66,7 +83,9 @@ function BodyWeight() {
               </div>
 
               <button
-                onClick={() => deleteWeight(entry.id)}
+                onClick={() =>
+                  deleteWeight(entry.id)
+                }
                 className="text-red-500"
               >
                 Delete
