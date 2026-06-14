@@ -1,8 +1,17 @@
 import StatCard from "../components/ui/StatCard";
-import { stats } from "../data/dashboardData";
 import RecentWorkouts from "../components/dashboard/RecentWorkouts";
 
 function Dashboard() {
+  const weights =
+    JSON.parse(
+      localStorage.getItem("weights")
+    ) || [];
+
+  const latestWeight =
+    weights.length > 0
+      ? weights[0].value
+      : "--";
+
   return (
     <div>
       <h1 className="text-3xl font-bold">
@@ -14,14 +23,29 @@ function Dashboard() {
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
-        {stats.map((stat) => (
-          <StatCard
-            key={stat.title}
-            title={stat.title}
-            value={stat.value}
-            unit={stat.unit}
-          />
-        ))}
+        <StatCard
+          title="Body Weight"
+          value={latestWeight}
+          unit="kg"
+        />
+
+        <StatCard
+          title="Squat PR"
+          value="160"
+          unit="kg"
+        />
+
+        <StatCard
+          title="Bench PR"
+          value="100"
+          unit="kg"
+        />
+
+        <StatCard
+          title="Deadlift PR"
+          value="210"
+          unit="kg"
+        />
       </div>
 
       <RecentWorkouts />
